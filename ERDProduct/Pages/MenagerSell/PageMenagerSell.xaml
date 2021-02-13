@@ -10,8 +10,8 @@
 
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="407*"/>
-            <RowDefinition Height="42*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal"
                     Margin="5"
@@ -139,7 +139,7 @@
                                 />
                             <DataGridTextColumn 
                                 Width="*"
-                                Header="Количество"
+                                Header="На складе"
                                 Binding="{Binding Ammount}"
                                 />
                             <DataGridTextColumn 
@@ -279,6 +279,11 @@
                     VerticalAlignment="Center"
                     Grid.Column="1"
                     Grid.Row="1">
+            <Button Content="Продать"
+                    Style="{StaticResource BtnStyleSTD}"
+                    Name="BtnSell"
+                    Height="30"
+                    Click="BtnSell_Click"/>
             <Button Content="Печать"
                     Style="{StaticResource BtnStyleSTD}"
                     Name="BtnPrintBuy"

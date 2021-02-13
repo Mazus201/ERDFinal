@@ -24,6 +24,7 @@ namespace ERDProduct.Windowses
         public double CountProd;
         public double PriceProd = 0;
         public double CountInStock = 0;
+        public string ProdName;
 
         public WindowToBuy(Product product)
         {
@@ -33,12 +34,17 @@ namespace ERDProduct.Windowses
             CountInStock = Convert.ToDouble(product.Ammount);
         }
 
+        /// <summary>
+        /// отображение финальной суммы заказа в реальном времени
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TxtCountProd_SelectionChanged(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(TxtCountProd.Text)) { }
-                else
+                if (string.IsNullOrWhiteSpace(TxtCountProd.Text)) { } //если юзер еще ничего не ввел, ничего не отображается
+                else //если что-то ввел, то идет подсчет
                 {
                     CountProd = Convert.ToDouble(TxtCountProd.Text);
                     Sum = PriceProd * CountProd;
@@ -61,23 +67,41 @@ namespace ERDProduct.Windowses
             catch { }
         }
 
+        /// <summary>
+        /// Обработка закупки товара
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (CountProd > CountInStock)
-            {
+            if (CountProd > CountInStock && CountProd % 1 == 0 && CountProd > 0) //проверка на наличие необходимого количества товра в магазине
+            {   //ниже - действие при отсутствии товара в магазине
                 MessageBoxResult result = MessageBox.Show($@"На складе производителя нет такого количества товра. Имеется лишь {CountInStock} единиц товара. 
 Свяжитесь с производителем или ожидайте пополнения склада.",
                 "Нехватка товара", 
                 MessageBoxButton.OK, 
                 MessageBoxImage.Information);
-                if (result == MessageBoxResult.OK)
+                if (result == MessageBoxResult.OK) //закрытие окна
                 {
-                    TxtCountProd.Text = CountInStock.ToString();
+                    TxtCountProd.Text = CountInStock.ToString(); //заполнение макимальным количеством товара в магазине
                 }
             }
-            else
+            else if (CountProd % 1 == 0 && CountProd > 0) //если необходимое количество в магазине
             {
+                MessageBoxResult result = MessageBox.Show($@"Вы точно хотите заказать {TxtProdName.Text} в количестве {CountProd} единиц на сумму {TxtTotal.Text}?",
+                    "Проверка", MessageBoxButton.YesNo, MessageBoxImage.Question); //уточнение правильно ли в веден заказ
+                if (result == MessageBoxResult.Yes) //если все верно, то заказываем
+                {
 
+                }
+                else //если где-то ошибка, то редактируем заказ
+                {
+                    this.Close();
+                }
+            }
+            else //если формат количетва заказываемого товара не правильно введен
+            {
+                MessageBox.Show("Вы неправильно ввели количество товара.", "Неверное количество товара", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

@@ -33,6 +33,8 @@ namespace ERDProduct.Pages
             CmbLogin.DisplayMemberPath = "Login";
             CmbLogin.SelectedValuePath = "Id";
             CmbLogin.ItemsSource = ClsFrame.Ent.User.ToList();
+
+            CmbLogin.SelectedIndex = 1;
         }
 
         private void BtnAuth_Click(object sender, RoutedEventArgs e)

@@ -10,8 +10,8 @@
 
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="407*"/>
-            <RowDefinition Height="42*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal"
                     Margin="5"
@@ -108,10 +108,10 @@
         </StackPanel>
         <TabControl Margin="0, 5">
             <TabItem Header="Магазин"
-                     Name="TabFirst"
+                     Name="TabShop"
                      IsSelected="True">
                 <TabItem.Content>
-                    <DataGrid Name="DtGrAdmBuy" 
+                    <DataGrid Name="DtGrAdmShop" 
                               Height="auto"
                               Width="auto" 
                               Grid.Row="0" 
@@ -188,7 +188,7 @@
             </TabItem>
             <TabItem Header="Продано"
                      IsSelected="False"
-                     Name="TabSec">
+                     Name="TabSold">
                 <TabItem.Content>
                     <DataGrid Name="DtGrAdmSell" 
                                   Height="auto"
@@ -292,6 +292,12 @@
                     VerticalAlignment="Center"
                     Grid.Column="1"
                     Grid.Row="1">
+            <Button Content="Удалить" 
+                    Name="btnDelete" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center"
+                    Click="btnDelete_Click"
+                    Style="{StaticResource BtnStyleDanger}"/>
             <Button Content="Печать"
                     Style="{StaticResource BtnStyleSTD}"
                     Name="BtnPrintBuy"

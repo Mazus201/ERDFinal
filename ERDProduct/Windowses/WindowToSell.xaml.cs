@@ -63,25 +63,34 @@ namespace ERDProduct.Windowses
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (CountProd > CountInStock)
+            try
             {
-                MessageBoxResult result = MessageBox.Show($@"В данный момент на складе имеется лишь {CountInStock} единиц товара. 
-Предупредите покупателя о задержке и продолжите или измените развмер заказа.",
-                "Нехватка товара",
-                MessageBoxButton.OKCancel,
-                MessageBoxImage.Information);
-                if (result == MessageBoxResult.OK)
+                if (CountProd > CountInStock && CountProd % 1 == 0 && CountProd > 0)
                 {
-                    this.Close();
+                    MessageBoxResult result = MessageBox.Show($@"В данный момент на складе имеется лишь {CountInStock} единиц товара. 
+Предупредите покупателя о задержке и продолжите или измените развмер заказа.",
+                    "Нехватка товара",
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Information);
+                    if (result == MessageBoxResult.OK)
+                    {
+                        this.Close();
+                    }
+                    else
+                    {
+                        TxtCountProd.Text = CountInStock.ToString();
+                    }
                 }
                 else
                 {
-                    TxtCountProd.Text = CountInStock.ToString();
+                    MessageBox.Show("Введеные данные о количестве товара не соответствуют корректному формату.",
+                   "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                this.Close();
+                MessageBox.Show($"Произошла ошибка, обратитесь к системному администратору. \n {ex}",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

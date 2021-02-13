@@ -112,6 +112,10 @@ namespace ERDProduct.Pages.MenagerSell
             window.Show();
         }
 
+        private void BtnSell_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using ERD.AppData;
 using ERDProduct.ApplicationData;
+using ERDProduct.Resource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace ERDProduct.Pages.Admin.AdminPages
     /// <summary>
     /// Логика взаимодействия для DocumentPage.xaml
     /// </summary>
-   public partial class DocumentPage : Page
+    public partial class DocumentPage : Page
     {
         public bool SizeWindow { get; private set; } //размер окна
         public decimal MadeMoney, SentMoney, Total; //переменные для данных о деньгах
@@ -28,7 +29,7 @@ namespace ERDProduct.Pages.Admin.AdminPages
         public DocumentPage()
         {
             InitializeComponent();
-            DtGrAdmBuy.ItemsSource = ClsFrame.Ent.Product.Where(x => x.ProductListType == 1).ToList(); // заполнение датагридов
+            DtGrAdmShop.ItemsSource = ClsFrame.Ent.Product.Where(x => x.ProductListType == 1).ToList(); // заполнение датагридов
             DtGrAdmTotal.ItemsSource = ClsFrame.Ent.Product.Where(x => x.ProductListType == 3).ToList();
             DtGrAdmSell.ItemsSource = ClsFrame.Ent.Product.Where(x => x.ProductListType == 4).ToList();
 
@@ -102,6 +103,93 @@ namespace ERDProduct.Pages.Admin.AdminPages
             ClsFiltr.TxbGot(TxtFind, "Поиск");
         }
 
+
+        string DeleteProdName = "выбранный товар";
+        /// <summary>
+        /// Удаление товара
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (TabShop.IsSelected == true) //проверка на то, из какой категории удалям товар
+                {
+                    MessageBoxResult result = MessageBox.Show($@"Вы точно хотите удалить {DeleteProdName} из списка предлагаемого товара магазина? 
+Помните, это действие безвозвратно!", "Удаление из магазина", MessageBoxButton.YesNo, MessageBoxImage.Question); //предупреждение юзера
+                    if (result == MessageBoxResult.Yes) //проверка ответа юзера
+                    {
+                        if (DtGrAdmShop.SelectedItems.Count > 0) //проверяем количество помеченных на удаление строк таблицы
+                        {
+                            for (int i = 0; i < DtGrAdmShop.SelectedItems.Count; i++) //перебераем все отмеченные на удаление строки
+                            {
+                                Product product = DtGrAdmShop.SelectedItems[i] as Product; //передаем БД эти строки
+                                ClsFrame.Ent.Product.Remove(product); //удаляем их из БД
+                            }
+                            ClsFrame.Ent.SaveChanges(); //сохраняем изменения
+                            DtGrAdmShop.Items.Refresh(); //попытка обновить страницу (неудачная)
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else if (TabTotal.IsSelected == true) //удаление со страницы товара на складе
+                {
+                    MessageBoxResult result = MessageBox.Show($@"Вы точно хотите удалить {DeleteProdName} из списка товаров на нашем складе? 
+Помните, это действие безвозвратно!", "Удаление со склада", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        if (DtGrAdmTotal.SelectedItems.Count > 0)
+                        {
+                            for (int i = 0; i < DtGrAdmTotal.SelectedItems.Count; i++)
+                            {
+                                Product product = DtGrAdmTotal.SelectedItems[i] as Product;
+                                ClsFrame.Ent.Product.Remove(product);
+                            }
+                            ClsFrame.Ent.SaveChanges();
+                            DtGrAdmTotal.Items.Refresh();
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else if (TabSold.IsSelected == true) //удаления со страницы проданного товара
+                {
+                    MessageBoxResult result = MessageBox.Show($@"Вы точно хотите удалить {DeleteProdName} из списка проданных товаров? 
+Помните, это действие безвозвратно!", "Удаление из проданных", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        if (DtGrAdmSell.SelectedItems.Count > 0)
+                        {
+                            for (int i = 0; i < DtGrAdmSell.SelectedItems.Count; i++)
+                            {
+                                Product product = DtGrAdmSell.SelectedItems[i] as Product;
+                                ClsFrame.Ent.Product.Remove(product);
+                            }
+                            ClsFrame.Ent.SaveChanges();
+                            DtGrAdmSell.Items.Refresh();
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else { }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($@"Кажется, вы пытаетесь удалить объект, которого нет!
+{ex}", "Ошибка удаления", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            ClsFiltr.TxbClear(TxtFind, "Поиск");
+        }
+
         private void TxtFind_LostFocus(object sender, RoutedEventArgs e)
         {
             ClsFiltr.TxbLost(TxtFind, "Поиск");
@@ -114,10 +202,10 @@ namespace ERDProduct.Pages.Admin.AdminPages
         /// <param name="e"></param>
         private void TxtFind_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            if (TabFirst.IsSelected == true && TxtFind.Text != "Поиск") //посик по таблице в закупке
-                DtGrAdmBuy.ItemsSource = ClsFrame.Ent.Product.Where(x => x.Name.Contains(TxtFind.Text) && x.ProductListType == 1).ToList();
+            if (TabShop.IsSelected == true && TxtFind.Text != "Поиск") //посик по таблице в закупке
+                DtGrAdmShop.ItemsSource = ClsFrame.Ent.Product.Where(x => x.Name.Contains(TxtFind.Text) && x.ProductListType == 1).ToList();
 
-            if (TabSec.IsSelected == true && TxtFind.Text != "Поиск") //в товарах на складе
+            if (TabSold.IsSelected == true && TxtFind.Text != "Поиск") //в товарах на складе
                 DtGrAdmSell.ItemsSource = ClsFrame.Ent.Product.Where(x => x.Name.Contains(TxtFind.Text) && x.ProductListType == 4).ToList();
 
             if (TabTotal.IsSelected == true && TxtFind.Text != "Поиск") //в проданых товарах
