@@ -1,0 +1,306 @@
+﻿<Page x:Class="ERDProduct.Pages.MemagerBuy.PageMenagerBuy"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ERDProduct.Pages.MemagerBuy"
+      mc:Ignorable="d" Name="PageMB"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="PageMenagerBuy">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="407*"/>
+            <RowDefinition Height="42*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal"
+                    Margin="5"
+                    Panel.ZIndex="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    x:Name="SPUsing">
+            <Button Height="20" 
+                    Width="20"
+                    Name="BtnMinimize"
+                    Click="BtnMinimize_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" 
+                                Background="Transparent">
+                            <Path x:Name="Pt"
+                                  Data="M0,0.2 M0,0.5 L0.5,0.5 M0.5, 0.5 L0.5,0.5 M0.5, 0.5"
+                                  Stretch="Uniform" 
+                                  Stroke="Black" 
+                                  StrokeThickness="2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" 
+                                     Value="True">
+                                <Setter TargetName="Bd" 
+                                        Property="Background" 
+                                        Value="#FF0083FF"/>
+                                <Setter TargetName="Pt" 
+                                        Property="Stroke" 
+                                        Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Height="20"
+                    Width="20"
+                    Name="BtnMaximize" 
+                    Click="BtnMaximize_Click"
+                    Margin="5,0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" 
+                                Background="Transparent">
+                            <Path x:Name="Pt" 
+                                  Data="m0,0 l1,1 m0,0 l1,0"
+                                  Stretch="Uniform" 
+                                  Stroke="Black" 
+                                  StrokeThickness="2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" 
+                                     Value="True">
+                                <Setter TargetName="Bd" 
+                                        Property="Background"
+                                        Value="#FF8EFF63"/>
+                                <Setter TargetName="Pt"
+                                        Property="Stroke"
+                                        Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Height="20" 
+                    Width="20" 
+                    Name="BtnClose"
+                    Click="BtnClose_Click" 
+                    Margin="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="Transparent">
+                            <Path x:Name="Pt" 
+                                  Data="M0,0 M0.2,0.2 L 0.8,0.8 M0.2,0.8 L0.8,0.2 M1,1"
+                                  Stretch="Uniform" 
+                                  Stroke="Black"
+                                  StrokeThickness="2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="Bd" 
+                                        Property="Background"
+                                        Value="Red"/>
+                                <Setter TargetName="Pt" 
+                                        Property="Stroke"
+                                        Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+        <TabControl Margin="0, 5">
+            <TabItem Header="Магазин"
+                     Name="TabShop"
+                     IsSelected="True">
+                <TabItem.Content>
+                    <DataGrid Name="DtGrAdmBuy" 
+                              Height="auto"
+                              Width="auto" 
+                              Grid.Row="0" 
+                              CanUserAddRows="False"
+                              Margin="10, 5, 10, 5"
+                              AutoGenerateColumns="False"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Auto"
+                              HorizontalAlignment="Center">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn 
+                                Width="*"
+                                Header="Название"
+                                Binding="{Binding Name}"
+                                />
+                            <DataGridTextColumn 
+                                Width="*"
+                                Header="Категория"
+                                Binding="{Binding IdCategory}"
+                                />
+                            <DataGridTextColumn 
+                                Width="*"
+                                Header="Цена"
+                                Binding="{Binding Price}"
+                                />
+                            <DataGridTextColumn 
+                                Width="*"
+                                Header="Количество"
+                                Binding="{Binding Ammount}"
+                                />
+                            <DataGridTemplateColumn 
+                        Width="*"
+                        Header="Закупить">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Name="BtnBuyProduct"
+                                                Content="Купить"
+                                                Style="{StaticResource BtnStyleSTD}"
+                                                Width="80"
+                                                Margin="0"
+                                                Height="16"
+                                                FontSize="7pt"
+                                                Click="BtnBuyProduct_Click"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="На складе"
+                     IsSelected="False"
+                     Name="TabStore">
+                <TabItem.Content>
+                    <DataGrid Name="DtGrAdmTotal" 
+                                  Height="auto"
+                                  Width="auto" 
+                                  Grid.Row="0" 
+                                  CanUserAddRows="False"
+                                  Margin="10, 5, 10, 5"
+                                  AutoGenerateColumns="False"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  HorizontalAlignment="Center">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn 
+                                    Width="*"
+                                    Header="Название"
+                                    Binding="{Binding Name}"
+                                    />
+                            <DataGridTextColumn 
+                                    Width="*"
+                                    Header="Категория"
+                                    Binding="{Binding IdCategory}"
+                                    />
+                            <DataGridTextColumn 
+                                    Width="*"
+                                    Header="Цена"
+                                    Binding="{Binding Price}"
+                                    />
+                            <DataGridTextColumn 
+                                    Width="*"
+                                    Header="Количество"
+                                    Binding="{Binding Ammount}"
+                                    />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="Статистика"
+                     IsSelected="False"
+                     Name="TabStatistic">
+                <TabItem.Content>
+                    <StackPanel Width="auto">
+                        <StackPanel Orientation="Horizontal"
+                                        Margin="10">
+                            <TextBlock Text="Самый продаваемый товар: "
+                                            FontSize="16pt"/>
+                            <TextBlock Text=""
+                                           Name="TxtPopular"
+                                           FontSize="16pt"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                        Margin="10">
+                            <TextBlock Text="Самый не продаваемый товар: "
+                                            FontSize="16pt"/>
+                            <TextBlock Text=""
+                                           Name="TxtUnPopular"
+                                           FontSize="16pt"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                        Margin="10">
+                            <TextBlock Text="Закончилось или не хватает для продажи: "
+                                            FontSize="16pt"/>
+                        </StackPanel>
+                        <DataGrid Name="DTEnded"
+                                  Height="250"
+                                  Width="750" 
+                                  Grid.Row="0" 
+                                  CanUserAddRows="False"
+                                  Margin="10, 5, 10, 5"
+                                  AutoGenerateColumns="False"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility= "Auto"
+                                  HorizontalAlignment="Center">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn 
+                                        Width="*"
+                                        Header="Название"
+                                        Binding="{Binding Name}"
+                                        />
+                                <DataGridTextColumn 
+                                        Width="*"
+                                        Header="Категория"
+                                        Binding="{Binding IdCategory}"
+                                        />
+                                <DataGridTextColumn 
+                                        Width="*"
+                                        Header="Цена"
+                                        Binding="{Binding Price}"
+                                        />
+                                <DataGridTextColumn 
+                                        Width="*"
+                                        Header="Количество"
+                                        Binding="{Binding Ammount}"
+                                        />
+                                <DataGridTextColumn 
+                                        Width="*"
+                                        Header="Зарезервировано"
+                                        Binding="{Binding Reserv}"
+                                        />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Grid.Column="1"
+                    Grid.Row="1">
+            <Button Content="Печать"
+                    Style="{StaticResource BtnStyleSTD}"
+                    Name="BtnPrintBuy"
+                    Height="30"
+                    Click="BtnPrintBuy_Click"/>
+        </StackPanel>
+        <Button Content="Назад"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Grid.Column="1"
+                Grid.Row="1"
+                Style="{StaticResource BtnStyleDanger}"
+                Name="BtnBack"
+                Height="30"
+                Click="BtnBack_Click"/>
+        <TextBox x:Name="TxtFind"
+                 Width="200"
+                 Visibility="Visible"
+                 FontSize="16pt"
+                 GotFocus="TxtFind_GotFocus"
+                 LostFocus="TxtFind_LostFocus"
+                 SelectionChanged="TxtFind_SelectionChanged"
+                 Text="Поиск"
+                 Foreground="Gray"
+                 Grid.Row="1"
+                 Height="30"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"/>
+    </Grid>
+</Page>
