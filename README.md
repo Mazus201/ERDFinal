@@ -1,5 +1,5 @@
 # ERDFinal
-Login - Password
-Admin - 1
-Sell - 2
-Buy - 3
+Login - Password: 
+Admin - 1; \n
+Sell - 2;
+Buy - 3.
